@@ -1,0 +1,124 @@
+# SSH session to pi@192.168.11.1
+# Generated: 2026-05-26T15:29:16
+# Status: CAMERA_OK (vcgencmd reports detected=1)
+# Remote log: /home/pi/camera_status_20260526-152916.log
+
+=== [hostname]  $ hostname
+clover-5653
+
+=== [os_release]  $ cat /etc/os-release 2>/dev/null || true
+PRETTY_NAME="Raspbian GNU/Linux 10 (buster)"
+NAME="Raspbian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=raspbian
+ID_LIKE=debian
+HOME_URL="http://www.raspbian.org/"
+SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+
+=== [uname]  $ uname -a
+Linux clover-5653 5.10.17-v7+ #1414 SMP Fri Apr 30 13:18:35 BST 2021 armv7l GNU/Linux
+
+=== [home_dirs]  $ ls -la /home 2>&1 || true
+total 16
+drwxr-xr-x  4 root          root  4096 Aug  8  2024 .
+drwxr-xr-x 18 root          root  4096 May  7  2021 ..
+drwxr-xr-x  2 mjpg_streamer video 4096 Aug  8  2024 mjpg_streamer
+drwxr-xr-x  6 pi            pi    4096 May 25 08:47 pi
+
+=== [raspberry_home_check]  $ [ -d /home/raspberry ] && echo EXISTS || echo MISSING
+MISSING
+
+=== [libcamera-hello]  $ libcamera-hello --list-cameras 2>&1 || true
+bash: libcamera-hello: command not found
+
+=== [vcgencmd_get_camera]  $ vcgencmd get_camera 2>&1 || true
+supported=1 detected=1
+
+=== [dev_video]  $ ls -la /dev/video* 2>&1 || true
+crw-rw---- 1 root video 81, 0 May  7  2021 /dev/video0
+crw-rw---- 1 root video 81, 5 May  7  2021 /dev/video10
+crw-rw---- 1 root video 81, 6 May  7  2021 /dev/video11
+crw-rw---- 1 root video 81, 7 May  7  2021 /dev/video12
+crw-rw---- 1 root video 81, 1 May  7  2021 /dev/video13
+crw-rw---- 1 root video 81, 2 May  7  2021 /dev/video14
+crw-rw---- 1 root video 81, 3 May  7  2021 /dev/video15
+crw-rw---- 1 root video 81, 4 May  7  2021 /dev/video16
+
+=== [v4l2-ctl_list]  $ v4l2-ctl --list-devices 2>&1 || true
+bcm2835-codec-decode (platform:bcm2835-codec):
+	/dev/video10
+	/dev/video11
+	/dev/video12
+
+bcm2835-isp (platform:bcm2835-isp):
+	/dev/video13
+	/dev/video14
+	/dev/video15
+	/dev/video16
+
+mmal service 16.1 (platform:bcm2835-v4l2-0):
+	/dev/video0
+
+=== [dmesg_camera]  $ dmesg 2>/dev/null | grep -iE 'camera|bcm2835|imx|ov5647|video' | tail -n 30 || true
+[    3.162182] bcm2835-power bcm2835-power: Broadcom BCM2835 power domains driver
+[    3.166442] mmc-bcm2835 3f300000.mmcnr: mmc_debug:0 mmc_debug2:0
+[    3.168960] mmc-bcm2835 3f300000.mmcnr: DMA channel allocated
+[    3.250821] mmc0: sdhost-bcm2835 loaded - DMA enabled (>1)
+[    5.913566] videodev: Linux video capture interface: v2.00
+[    5.980587] bcm2835_vc_sm_cma_probe: Videocore shared memory driver
+[    6.017491] bcm2835_mmal_vchiq: module is from the staging directory, the quality is unknown, you have been warned.
+[    6.059105] bcm2835_v4l2: module is from the staging directory, the quality is unknown, you have been warned.
+[    6.711252] bcm2835-v4l2-0: scene mode selected 0, was 0
+[    6.711695] bcm2835-v4l2-0: V4L2 device registered as video0 - stills mode > 1280x720
+[    6.723052] bcm2835-v4l2-0: Broadcom 2835 MMAL video capture ver 0.0.2 loaded.
+[    7.264929] bcm2835_isp: module is from the staging directory, the quality is unknown, you have been warned.
+[    7.274187] bcm2835_codec: module is from the staging directory, the quality is unknown, you have been warned.
+[    7.290496] bcm2835-isp bcm2835-isp: Device node output[0] registered as /dev/video13
+[    7.291230] bcm2835-isp bcm2835-isp: Device node capture[0] registered as /dev/video14
+[    7.291722] bcm2835-isp bcm2835-isp: Device node capture[1] registered as /dev/video15
+[    7.292138] bcm2835-isp bcm2835-isp: Device node stats[2] registered as /dev/video16
+[    7.292174] bcm2835-isp bcm2835-isp: Register output node 0 with media controller
+[    7.292205] bcm2835-isp bcm2835-isp: Register capture node 1 with media controller
+[    7.292231] bcm2835-isp bcm2835-isp: Register capture node 2 with media controller
+[    7.292252] bcm2835-isp bcm2835-isp: Register capture node 3 with media controller
+[    7.292535] bcm2835-isp bcm2835-isp: Loaded V4L2 bcm2835-isp
+[    7.312448] bcm2835-codec bcm2835-codec: Device registered as /dev/video10
+[    7.312508] bcm2835-codec bcm2835-codec: Loaded V4L2 decode
+[    7.319970] bcm2835-codec bcm2835-codec: Device registered as /dev/video11
+[    7.320035] bcm2835-codec bcm2835-codec: Loaded V4L2 encode
+[    7.333448] bcm2835-codec bcm2835-codec: Device registered as /dev/video12
+[    7.333505] bcm2835-codec bcm2835-codec: Loaded V4L2 isp
+[    7.415729] snd_bcm2835: module is from the staging directory, the quality is unknown, you have been warned.
+[    7.443488] bcm2835_audio bcm2835_audio: card created with 8 channels
+
+=== [lsmod_video]  $ lsmod 2>/dev/null | grep -iE 'bcm2835|v4l|video' || true
+snd_bcm2835            28672  1
+snd_pcm               106496  1 snd_bcm2835
+i2c_bcm2835            16384  0
+snd                    77824  5 snd_timer,snd_bcm2835,snd_pcm
+bcm2835_codec          36864  0
+bcm2835_isp            32768  0
+spi_bcm2835            20480  0
+v4l2_mem2mem           36864  1 bcm2835_codec
+videobuf2_dma_contig    20480  2 bcm2835_isp,bcm2835_codec
+bcm2835_v4l2           40960  0
+bcm2835_mmal_vchiq     28672  3 bcm2835_isp,bcm2835_codec,bcm2835_v4l2
+vc_sm_cma              32768  2 bcm2835_isp,bcm2835_mmal_vchiq
+videobuf2_vmalloc      16384  1 bcm2835_v4l2
+videobuf2_memops       16384  2 videobuf2_dma_contig,videobuf2_vmalloc
+videobuf2_v4l2         32768  4 bcm2835_isp,bcm2835_codec,bcm2835_v4l2,v4l2_mem2mem
+videobuf2_common       61440  5 bcm2835_isp,bcm2835_codec,bcm2835_v4l2,v4l2_mem2mem,videobuf2_v4l2
+videodev              249856  6 bcm2835_isp,bcm2835_codec,videobuf2_common,bcm2835_v4l2,v4l2_mem2mem,videobuf2_v4l2
+mc                     45056  6 bcm2835_isp,bcm2835_codec,videobuf2_common,videodev,v4l2_mem2mem,videobuf2_v4l2
+
+=== [usb_devices]  $ lsusb 2>&1 || true
+Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp. SMSC9512/9514 Fast Ethernet Adapter
+Bus 001 Device 002: ID 0424:9514 Standard Microsystems Corp. SMC9514 Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+=== [clover_camera_service]  $ systemctl status clover 2>&1 | head -n 20 || true
+Unit clover.service could not be found.
+
